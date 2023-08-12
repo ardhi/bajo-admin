@@ -1,0 +1,3 @@
+{
+  "dependencies": ["bajo-db", "bajo-web", "bajo-web-mpa", "bajo-web-static"]
+}
