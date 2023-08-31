@@ -1,6 +1,6 @@
 const update = {
   handler: async function (ctx, req, reply) {
-    const { recordUpdate } = this.bajoWebRestapi.helper
+    const { recordUpdate } = this.bajoWeb.helper
     return await recordUpdate({ req, reply })
   },
   schema: async function (ctx, parentCtx) {

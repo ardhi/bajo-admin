@@ -1,6 +1,6 @@
 const get = {
   handler: async function (ctx, req, reply) {
-    const { recordGet } = this.bajoWebRestapi.helper
+    const { recordGet } = this.bajoWeb.helper
     return await recordGet({ req, reply })
   },
   schema: async function (ctx, parentCtx) {

@@ -1,6 +1,6 @@
 const find = {
   handler: async function (ctx, req, reply) {
-    const { recordFind } = this.bajoWebRestapi.helper
+    const { recordFind } = this.bajoWeb.helper
     return await recordFind({ req, reply })
   }
 }

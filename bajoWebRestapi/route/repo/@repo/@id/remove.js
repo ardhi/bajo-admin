@@ -1,6 +1,6 @@
 const remove = {
   handler: async function (ctx, req, reply) {
-    const { recordRemove } = this.bajoWebRestapi.helper
+    const { recordRemove } = this.bajoWeb.helper
     return await recordRemove({ req, reply })
   },
   schema: async function (ctx, parentCtx) {
