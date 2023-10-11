@@ -1,0 +1,35 @@
+{% cmp 'html', lang=_meta.lang, dataBsTheme=_meta.darkMode %}
+  {% cmp 'head' %}
+    {% cmp 'meta', charset='utf-8' %}{% endcmp %}
+    {% cmp 'meta', name='viewport', content='width=device-width, initial-scale=1' %}{% endcmp %}
+    {% cmp 'title'%}{{ getConfig('bajoAdmin').title|t }} - {{ _meta.site.title }}{% endcmp %}
+    {% for c in _meta.theme.css %}
+      {% cmp 'link', rel='stylesheet', href=c %}{% endcmp %}
+    {% endfor %}
+    {% cmp 'link', rel='stylesheet', href=assetDir('bajoWebMpa') + '/css/navbar-white-text.css' %}{% endcmp %}
+    {% block css %}{% endblock %}
+  {% endcmp %}
+  {% cmp 'body', padding=0, margin=0 %}
+    {% cmp 'navbar', expand='large', bg='primary', sticky='top', dark=true, padding='y3', shadow=true %}
+      {% cmp 'container', sizing='medium' %}
+        {% cmp 'navbarBrand', href=routePath('bajoAdmin:/home') %}
+          {{ getConfig('bajoAdmin').title|t }}
+        {% endcmp %}
+        {% cmp 'navbarToggler', collapseId='main-navs' %}{% endcmp %}
+        {% cmp 'navbarCollapse', id='main-navs' %}
+          {% cmp 'nav', flex='row,wrap', margin='startAuto' %}
+            {% include 'bajoWebMpa:/partial/nav-switcher' %}
+          {% endcmp %}
+        {% endcmp %}
+      {% endcmp %}
+    {% endcmp %}
+    {% cmp 'container', sizing='medium', margin='top3' %}
+      {% block body %}{% endblock %}
+    {% endcmp %}
+    {% include 'bajoWebMpa:/partial/footer' %}
+    {% for s in _meta.theme.script %}
+      {% cmp 'script', src=s %}{% endcmp %}
+    {% endfor %}
+    {% block script %}{% endblock %}
+  {% endcmp %}
+{% endcmp %}
