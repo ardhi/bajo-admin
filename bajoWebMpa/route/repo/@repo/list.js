@@ -6,11 +6,11 @@ export default {
     const { recordFind, recordSchema } = this.bajoWeb.helper
     const { isEmpty, omit } = await importPkg('lodash-es')
     const data = await recordFind({ req, reply })
-    if (!isEmpty(req.query.list)) req.session.bookList = req.query.list
-    if (!req.session.bookList) req.session.bookList = 'grid'
+    if (!isEmpty(req.query.view)) req.session.adminView = req.query.view
+    if (!req.session.adminView) req.session.adminView = 'table'
     const schema = await recordSchema({ req })
-    return reply.view('bajoAdmin:/repo/list', { data: data.data, params: omit(data, ['data']), list: req.session.bookList, schema })
+    const params = omit(data, ['data'])
+    return reply.view('bajoAdmin:/repo/list', { data: data.data, params, view: req.session.adminView, schema })
   },
   preHandler: repoPreHandler
 }
-
