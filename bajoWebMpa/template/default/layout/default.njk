@@ -17,12 +17,12 @@
         {% endcmp %}
         {% cmp 'navbarToggler', collapseId='main-navs' %}{% endcmp %}
         {% cmp 'navbarCollapse', id='main-navs' %}
-          {% cmp 'nav', flex='row,wrap', margin='startAuto' %}
-            {% include 'bajoWebMpa:/partial/nav-switcher' %}
-          {% endcmp %}
+          {% include 'bajoAdmin:/partial/menu' %}
+          {% include 'bajoWebMpa:/partial/nav-switcher' %}
         {% endcmp %}
       {% endcmp %}
     {% endcmp %}
+    {% include 'bajoAdmin:/partial/offcanvas' %}
     {% cmp 'container', sizing='medium', margin='top3' %}
       {% block body %}{% endblock %}
     {% endcmp %}

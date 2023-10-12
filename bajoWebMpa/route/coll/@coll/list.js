@@ -1,4 +1,4 @@
-import repoPreHandler from '../../../../lib/repo-pre-handler.js'
+import collPreHandler from '../../../../lib/coll-pre-handler.js'
 
 export default {
   handler: async function (ctx, req, reply) {
@@ -10,7 +10,7 @@ export default {
     if (!req.session.adminView) req.session.adminView = 'table'
     const schema = await recordSchema({ req })
     const params = omit(data, ['data'])
-    return reply.view('bajoAdmin:/repo/list', { data: data.data, params, view: req.session.adminView, schema })
+    return reply.view('bajoAdmin:/coll/list', { data: data.data, params, view: req.session.adminView, schema })
   },
-  preHandler: repoPreHandler
+  preHandler: collPreHandler
 }
