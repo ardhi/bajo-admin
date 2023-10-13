@@ -1,3 +1,14 @@
-{% cmp 'offcanvas', id='coll-offcanvas', title='Collection'|t %}
-  test
+{% cmp 'offcanvas', id='coll-offcanvas', title='Collection'|t, noBodyWrap=true %}
+  {% cmp 'accordion', id='coll-menu', flush=true %}
+    {% for m in collMenu %}
+      {% cmp 'accordionItem', target=m.id, caption=m.name, parentId='coll-menu' %}
+        {% for c in m.children %}
+          {% cmp 'button', variant='primary', margin='bottom1', tag='a',
+            href=routePath('bajoAdmin:/coll/' + c.id + '/list') %}
+            {{ c.name }}
+          {% endcmp %}
+        {% endfor %}
+      {% endcmp %}
+    {% endfor %}
+  {% endcmp %}
 {% endcmp %}
