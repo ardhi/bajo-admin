@@ -8,7 +8,7 @@ export default {
     const { isEmpty, omit, get } = await importPkg('lodash-es')
     const coll = pascalCase(req.params.coll)
     const schema = await getSchemaExt(coll, 'list')
-    if (!req.query.sort) req.query.sort = get(schema, 'view.list.defSort')
+    if (!req.query.sort) req.query.sort = get(schema, 'view.defSort')
     const data = await recordFind({ req })
     if (!isEmpty(req.query.view)) req.session.adminView = req.query.view
     if (!req.session.adminView) req.session.adminView = 'table'

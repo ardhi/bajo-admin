@@ -1,0 +1,19 @@
+{% extends 'bajoAdmin:/layout/default' %}
+
+{% block body %}
+{% cmp 'navbar', margin='bottom3', border='bottom' %}
+  {% cmp 'h5' %}
+    {% cmp 'a', href="javascript:history.go(-1)", icon='arrowStart', iconMargin='end1' %}{% endcmp %}
+    {{ 'Detail'|t }}
+  {% endcmp %}
+{% endcmp %}
+{% cmp 'div', margin='bottom3' %}
+  {% for l in schema.view.layouts %}
+    {% set legend = l.title|is('empty')|ternary(false, l.title|t) %}
+    {% cmp 'fieldset', labelFloating=true, margin='bottom3', options=l.fields, legend=legend %}{% endcmp %}
+  {% endfor %}
+{% endcmp %}
+{% endblock %}
+
+{% block css %}{% endblock %}
+{% block script %}{% endblock %}

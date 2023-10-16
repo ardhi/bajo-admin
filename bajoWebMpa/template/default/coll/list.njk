@@ -1,14 +1,11 @@
 {% extends 'bajoAdmin:/layout/default' %}
 
 {% block body %}
-{% cmp 'navbar', margin='bottom3' %}
-  {% cmp 'form', display='flex', role='search' %}
-    {% cmp 'input', name='query', margin='end2', type='search', placeholder='Search'|t, ariaLabel='Search', value=_meta.reqQuery.query %}{% endcmp %}
-  {% endcmp %}
-  {% cmp 'viewTypeButtons', view=view, types=['table', 'gridSmall', 'grid'] %}{% endcmp %}
-{% endcmp %}
+{% set baseRoute = 'bajoAdmin:/coll/:coll' %}
+{% set baseId = 'coll' %}
+{% cmp 'crudNavbar', view=view, baseRoute=baseRoute, baseId=baseId %}{% endcmp %}
 {% if view === 'table' %}
-  {% cmp 'crudTable', records=data, schema=schema %}
+  {% cmp 'crudTable', records=data, schema=schema, id=baseId, route=baseRoute %}
   {% endcmp %}
 {% else %}
   {% cmp 'row', class='masonry' %}
