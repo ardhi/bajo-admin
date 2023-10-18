@@ -1,5 +1,7 @@
 import path from 'path'
 
+const disableds = ['id', 'createdAt', 'updatedAt']
+
 async function applyLayout ({ schema, hidden, plaintext } = {}) {
   const { importPkg } = this.bajo.helper
   const { map, each, isString, pullAt, trim, find } = await importPkg('lodash-es')
@@ -7,7 +9,8 @@ async function applyLayout ({ schema, hidden, plaintext } = {}) {
     schema.view.layouts = [{
       fields: map(schema.properties, p => {
         const f = { name: p.name, col: ':12', type: p.type }
-        if (plaintext) f.widget = 'formPlaintext'
+        if (plaintext || disableds.includes(p.name)) f.widget = 'formPlaintext'
+        // if (disableds.includes(p.name)) f.placeholder = '- autocreate -'
         return f
       })
     }]
@@ -16,13 +19,15 @@ async function applyLayout ({ schema, hidden, plaintext } = {}) {
       const deleted = []
       each(layout.fields, (f, j) => {
         if (isString(f)) {
-          const [name, col, widget] = map(f.split(';'), m => trim(m))
+          const [name, col, widget, placeholder] = map(f.split(';'), m => trim(m))
           f = { name }
           f.col = col ?? ':12'
           if (widget) f.widget = widget
+          if (placeholder) f.placeholder = placeholder
         }
         if (hidden.includes(f.name)) deleted.push(j)
         if (plaintext) f.widget = 'formPlaintext'
+        if (!f.widget && disableds.includes(f.name)) f.widget = 'formPlaintext'
         f.type = find(schema.properties, { name: f.name }).type
         layout.fields[j] = f
       })

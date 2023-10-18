@@ -1,10 +1,15 @@
 {% extends 'bajoAdmin:/layout/default' %}
+{% set baseRoute = 'bajoAdmin:/coll/:coll' %}
+{% set baseId = 'coll' %}
 
 {% block body %}
 {% cmp 'navbar', margin='bottom3', border='bottom' %}
   {% cmp 'h5' %}
-    {% cmp 'a', href="javascript:history.go(-1)", icon='arrowStart', iconMargin='end1' %}{% endcmp %}
+    {% cmp 'a', href=routePath(baseRoute + '/list', _meta), icon='arrowStart', iconMargin='end1' %}{% endcmp %}
     {{ 'Detail'|t }}
+  {% endcmp %}
+  {% cmp 'a', id='btn-clone', href='#' %}
+    {{ 'Copy as New Record'|t }}
   {% endcmp %}
 {% endcmp %}
 {% cmp 'div', margin='bottom3' %}
@@ -13,6 +18,26 @@
     {% cmp 'fieldset', labelFloating=true, margin='bottom3', options=l.fields, legend=legend %}{% endcmp %}
   {% endfor %}
 {% endcmp %}
+{% cmp 'div', display='flex', justifyContent='between' %}
+  {% cmp 'button', variant='primary', id='btn-delete' %}{{ 'Delete'|t }}{% endcmp %}
+  {% cmp 'button', tag='a', variant='primary', href=routePath(baseRoute + '/edit', { params: _meta.params }) + '/' + form.id %}{{ 'Update'|t }}{% endcmp %}
+{% endcmp %}
+
+{% script %}
+<script>
+  {% include 'cmp:_grid-script-delete-prompt:bootstrap5' %}
+  {% include 'cmp:_grid-script-clone:bootstrap5' %}
+  $('#btn-delete').on('click', function () {
+    const ids = ['{{ form.id }}']
+    deleteRecord(ids)
+  })
+  $('#btn-clone').on('click', function () {
+    const payload = '{{ form|dump }}'
+    cloneRecord(payload)
+  })
+</script>
+{% endscript %}
+
 {% endblock %}
 
 {% block css %}{% endblock %}

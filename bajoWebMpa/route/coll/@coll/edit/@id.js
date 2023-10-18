@@ -21,6 +21,6 @@ export default {
         if (err.message === 'redirect') redirectTo('bajoAdmin:/coll/:coll/list', { params: req.params })
       }
     }
-    return reply.view('bajoAdmin:/coll/form', { form, params, schema, collMenu, action: 'Edit' })
+    return reply.view('bajoAdmin:/coll/form', { form, params, schema, collMenu, action: 'Edit Record' })
   }
 }
