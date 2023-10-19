@@ -1,6 +1,7 @@
-import buildCollMenu from '../../../../lib/build-coll-menu.js'
+import preParsing from '../../../../lib/pre-parsing.js'
 
 export default {
+  preParsing,
   method: ['GET', 'POST'],
   handler: async function (ctx, req, reply) {
     const { pascalCase, error } = this.bajo.helper
@@ -16,7 +17,6 @@ export default {
         form = JSON.parse(decoded)
       } catch (err) {}
     }
-    const collMenu = await buildCollMenu.call(this)
     if (req.method === 'POST') {
       try {
         form = (await recordCreate({ req })).data
@@ -25,6 +25,6 @@ export default {
         if (err.message === 'redirect') redirectTo('bajoAdmin:/coll/:coll/list', { params: req.params })
       }
     }
-    return reply.view('bajoAdmin:/coll/form', { form, schema, collMenu, action: 'Add Record' })
+    return reply.view('bajoAdmin:/coll/form', { form, schema, action: 'Add Record' })
   }
 }

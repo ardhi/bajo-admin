@@ -64,7 +64,7 @@ async function getSchemaExt (coll, view) {
   schema.properties = filter(schema.properties, p => {
     return !(hidden.includes(p.name) || p.hidden)
   })
-  schema = pick(schema, ['name', 'properties', 'indexes'])
+  schema = pick(schema, ['name', 'properties', 'indexes', 'disabled'])
   schema.view = omit(viewOpts, ['hidden'])
   await handler[view].call(this, schema, hidden)
   return schema

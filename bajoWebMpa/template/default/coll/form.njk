@@ -26,7 +26,9 @@
     {% endcmp %}
   {% else %}
     {% cmp 'div', display='flex', justifyContent='between' %}
-      {% cmp 'button', variant='primary', id='btn-delete' %}{{ 'Delete'|t }}{% endcmp %}
+      {% if not schema.disabled|array('includes', 'remove') %}
+        {% cmp 'button', variant='primary', id='btn-delete' %}{{ 'Delete'|t }}{% endcmp %}
+      {% endif %}
       {% cmp 'div' %}
         {% cmp 'button', variant='link', type='reset', margin='end3' %}{{ 'Reset'|t }}{% endcmp %}
         {% cmp 'button', variant='primary', type='submit' %}{{ 'Submit'|t }}{% endcmp %}

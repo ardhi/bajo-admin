@@ -1,14 +1,36 @@
-{% cmp 'offcanvas', id='coll-offcanvas', title='Collection'|t, noBodyWrap=true %}
-  {% cmp 'accordion', id='coll-menu', flush=true %}
-    {% for m in collMenu %}
-      {% cmp 'accordionItem', target=m.id, caption=m.name, parentId='coll-menu' %}
-        {% for c in m.children %}
-          {% cmp 'button', variant='primary', margin='bottom1', tag='a',
-            href=routePath('bajoAdmin:/coll/' + c.id + '/list') %}
-            {{ c.name }}
+{% cmp 'offcanvas', id='coll-offcanvas', title='Menu'|t, noBodyWrap=true %}
+  {% cmp 'nav', type='underline', margin='x3,bottom2' %}
+    {% cmp 'navItem', active=true, id='coll-tab', dataBsToggle='tab', dataBsTarget='#coll-pane', caption='Collection'|t %}{% endcmp %}
+    {% cmp 'navItem', id='pages-tab', dataBsToggle='tab', dataBsTarget='#pages-pane', caption='Pages'|t %}{% endcmp %}
+  {% endcmp %}
+  {% cmp 'tabContent' %}
+    {% cmp 'tabPane', id='coll-pane', show=true, active=true, fade=true %}
+      {% cmp 'accordion', id='coll-menu', flush=true %}
+        {% for m in _meta.menu.coll %}
+          {% cmp 'accordionItem', target=m.id, caption=m.name, parentId='coll-menu' %}
+            {% for c in m.children %}
+              {% cmp 'button', variant='primary', margin='bottom1', tag='a',
+                href=routePath('bajoAdmin:/coll/' + c.id + '/list') %}
+                {{ c.name }}
+              {% endcmp %}
+            {% endfor %}
           {% endcmp %}
         {% endfor %}
       {% endcmp %}
-    {% endfor %}
+    {% endcmp %}
+    {% cmp 'tabPane', id='pages-pane', fade=true %}
+      {% cmp 'accordion', id='pages-menu', flush=true %}
+        {% for m in _meta.menu.pages %}
+          {% cmp 'accordionItem', target=m.name, caption=m.name, parentId='pages-menu' %}
+            {% for c in m.children %}
+              {% cmp 'button', variant='primary', margin='bottom1', tag='a',
+                href=routePath(c.url, { params: _meta.params }) %}
+                {{ c.name }}
+              {% endcmp %}
+            {% endfor %}
+          {% endcmp %}
+        {% endfor %}
+      {% endcmp %}
+    {% endcmp %}
   {% endcmp %}
 {% endcmp %}

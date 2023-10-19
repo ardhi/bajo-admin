@@ -12,12 +12,15 @@
   {% cmp 'body', padding=0, margin=0 %}
     {% cmp 'navbar', expand='large', bg='primary', sticky='top', dark=true, padding='y3', shadow=true %}
       {% cmp 'container', sizing='medium' %}
-        {% cmp 'navbarBrand', href=routePath('bajoAdmin:/home') %}
+        {% cmp 'navbarBrand', dataBsToggle='offcanvas', href='#coll-offcanvas' %}
+          {% cmp 'icon', name='book', margin='end1' %}{% endcmp %}
           {{ getConfig('bajoAdmin').title|t }}
         {% endcmp %}
         {% cmp 'navbarToggler', collapseId='main-navs' %}{% endcmp %}
         {% cmp 'navbarCollapse', id='main-navs' %}
-          {% include 'bajoAdmin:/partial/menu' %}
+          {% cmp 'nav', navbar=true, flex='grow1' %}
+            {% cmp 'navItem' %}test{% endcmp %}
+          {% endcmp %}
           {% include 'bajoWebMpa:/partial/nav-switcher' %}
         {% endcmp %}
       {% endcmp %}

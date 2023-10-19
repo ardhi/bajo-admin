@@ -1,6 +1,7 @@
-import buildCollMenu from '../../../../lib/build-coll-menu.js'
+import preParsing from '../../../../lib/pre-parsing.js'
 
 export default {
+  preParsing,
   handler: async function (ctx, req, reply) {
     const { importPkg, pascalCase } = this.bajo.helper
     const { recordFind } = this.bajoWeb.helper
@@ -13,7 +14,6 @@ export default {
     if (!isEmpty(req.query.view)) req.session.adminView = req.query.view
     if (!req.session.adminView) req.session.adminView = 'table'
     const params = omit(data, ['data'])
-    const collMenu = await buildCollMenu.call(this)
-    return reply.view('bajoAdmin:/coll/list', { data: data.data, params, view: req.session.adminView, schema, collMenu })
+    return reply.view('bajoAdmin:/coll/list', { data: data.data, params, view: req.session.adminView, schema })
   }
 }

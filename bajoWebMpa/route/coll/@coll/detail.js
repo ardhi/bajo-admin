@@ -1,6 +1,7 @@
-import buildCollMenu from '../../../../../lib/build-coll-menu.js'
+import preParsing from '../../../../lib/pre-parsing.js'
 
 export default {
+  preParsing,
   handler: async function (ctx, req, reply) {
     const { importPkg, pascalCase } = this.bajo.helper
     const { recordGet } = this.bajoWeb.helper
@@ -10,7 +11,6 @@ export default {
     const schema = await getSchemaExt(coll, 'detail')
     const data = await recordGet({ req })
     const params = omit(data, ['data'])
-    const collMenu = await buildCollMenu.call(this)
-    return reply.view('bajoAdmin:/coll/detail', { form: data.data, params, schema, collMenu })
+    return reply.view('bajoAdmin:/coll/detail', { form: data.data, params, schema })
   }
 }

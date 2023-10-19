@@ -3,7 +3,7 @@
 {% block body %}
 {% set baseRoute = 'bajoAdmin:/coll/:coll' %}
 {% set baseId = 'coll' %}
-{% cmp 'crudNavbar', view=view, baseRoute=baseRoute, baseId=baseId %}{% endcmp %}
+{% cmp 'crudNavbar', view=view, schema=schema, baseRoute=baseRoute, baseId=baseId %}{% endcmp %}
 {% if view === 'table' %}
   {% cmp 'crudTable', records=data, schema=schema, id=baseId, route=baseRoute %}
   {% endcmp %}

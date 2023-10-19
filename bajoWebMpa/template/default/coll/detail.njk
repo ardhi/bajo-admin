@@ -19,8 +19,12 @@
   {% endfor %}
 {% endcmp %}
 {% cmp 'div', display='flex', justifyContent='between' %}
-  {% cmp 'button', variant='primary', id='btn-delete' %}{{ 'Delete'|t }}{% endcmp %}
-  {% cmp 'button', tag='a', variant='primary', href=routePath(baseRoute + '/edit', { params: _meta.params }) + '/' + form.id %}{{ 'Update'|t }}{% endcmp %}
+  {% if not schema.disabled|array('includes', 'remove') %}
+    {% cmp 'button', variant='primary', id='btn-delete' %}{{ 'Delete'|t }}{% endcmp %}
+  {% endif %}
+  {% if not schema.disabled|array('includes', 'update') %}
+    {% cmp 'button', tag='a', variant='primary', href=routePath(baseRoute + '/edit', { params: _meta.params }) + '?id=' + form.id %}{{ 'Update'|t }}{% endcmp %}
+  {% endif %}
 {% endcmp %}
 
 {% script %}
