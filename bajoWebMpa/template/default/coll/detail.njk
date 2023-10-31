@@ -1,36 +1,43 @@
-{% extends 'bajoAdmin:/layout/default' %}
-{% set baseRoute = 'bajoAdmin:/coll/:coll' %}
-{% set baseId = 'coll' %}
+{% extends tpl.extend|d('bajoAdmin:/layout/default') %}
+{% set baseRoute = tpl.baseRoute|d('bajoAdmin:/coll/:coll') %}
+{% set baseId = tpl.baseId|d('coll') %}
 
 {% block body %}
-{% cmp 'navbar', margin='bottom3', border='bottom' %}
-  {% cmp 'h5' %}
-    {% cmp 'a', href=routePath(baseRoute + '/list', _meta), icon='arrowStart', iconMargin='end1' %}{% endcmp %}
-    {{ 'Detail'|t }}
+{% cmp 'row' %}
+  {% cmp 'col', columns='small:12,medium:8' %}
+    {% cmp 'navbar', margin='bottom3', border='bottom' %}
+      {% cmp 'h5' %}
+        {% cmp 'a', href=routePath(baseRoute + '/list', _meta), icon='arrowStart', iconMargin='end1' %}{% endcmp %}
+        {{ 'Detail'|t }}
+      {% endcmp %}
+    {% endcmp %}
+    {% cmp 'div', margin='bottom3' %}
+      {% for l in schema.view.layouts %}
+        {% set legend = l.title|is('empty')|ternary(false, l.title|t) %}
+        {% cmp 'fieldset', labelFloating=true, margin='bottom3', options=l.fields, legend=legend %}{% endcmp %}
+      {% endfor %}
+    {% endcmp %}
+    {% cmp 'div', display='flex', justifyContent='between' %}
+      {% cmp 'div' %}
+        {% cmp 'button', variant='primary', id='btn-clone', href='#' %}{{ 'Copy as New Record'|t }}{% endcmp %}
+        {% if not schema.disabled|array('includes', 'remove') %}
+          {% cmp 'button', variant='danger', id='btn-delete' %}{{ 'Delete'|t }}{% endcmp %}
+        {% endif %}
+      {% endcmp %}
+      {% if not schema.disabled|array('includes', 'update') %}
+        {% cmp 'button', tag='a', variant='primary', href=routePath(baseRoute + '/edit', { params: _meta.params }) + '?id=' + form.id %}{{ 'Update'|t }}{% endcmp %}
+      {% endif %}
+    {% endcmp %}
   {% endcmp %}
-  {% cmp 'a', id='btn-clone', href='#' %}
-    {{ 'Copy as New Record'|t }}
+  {% cmp 'col', columns='small:12,medium:4' %}
+    {% cmp 'crudAttachmentEmbed', baseId=baseId + '-attn', baseRoute=baseRoute + '/attachment', record=form, schema=schema %}{% endcmp %}
   {% endcmp %}
-{% endcmp %}
-{% cmp 'div', margin='bottom3' %}
-  {% for l in schema.view.layouts %}
-    {% set legend = l.title|is('empty')|ternary(false, l.title|t) %}
-    {% cmp 'fieldset', labelFloating=true, margin='bottom3', options=l.fields, legend=legend %}{% endcmp %}
-  {% endfor %}
-{% endcmp %}
-{% cmp 'div', display='flex', justifyContent='between' %}
-  {% if not schema.disabled|array('includes', 'remove') %}
-    {% cmp 'button', variant='primary', id='btn-delete' %}{{ 'Delete'|t }}{% endcmp %}
-  {% endif %}
-  {% if not schema.disabled|array('includes', 'update') %}
-    {% cmp 'button', tag='a', variant='primary', href=routePath(baseRoute + '/edit', { params: _meta.params }) + '?id=' + form.id %}{{ 'Update'|t }}{% endcmp %}
-  {% endif %}
 {% endcmp %}
 
 {% script %}
 <script>
-  {% include 'cmp:_grid-script-delete-prompt:bootstrap5' %}
-  {% include 'cmp:_grid-script-clone:bootstrap5' %}
+  {% include 'cmp:_crud-script-delete-prompt:bootstrap5' %}
+  {% include 'cmp:_crud-script-clone:bootstrap5' %}
   $('#btn-delete').on('click', function () {
     const ids = ['{{ form.id }}']
     deleteRecord(ids)

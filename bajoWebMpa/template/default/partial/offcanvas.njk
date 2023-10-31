@@ -11,7 +11,7 @@
             {% for c in m.children %}
               {% cmp 'button', variant='primary', margin='bottom1', tag='a',
                 href=routePath('bajoAdmin:/coll/' + c.id + '/list') %}
-                {{ c.name }}
+                {{ c.name|t }}
               {% endcmp %}
             {% endfor %}
           {% endcmp %}
@@ -25,7 +25,7 @@
             {% for c in m.children %}
               {% cmp 'button', variant='primary', margin='bottom1', tag='a',
                 href=routePath(c.url, { params: _meta.params }) %}
-                {{ c.name }}
+                {{ c.title|t }}
               {% endcmp %}
             {% endfor %}
           {% endcmp %}

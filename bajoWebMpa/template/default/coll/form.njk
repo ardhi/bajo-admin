@@ -1,40 +1,46 @@
-{% extends 'bajoAdmin:/layout/default' %}
-{% set baseRoute = 'bajoAdmin:/coll/:coll' %}
-{% set baseId = 'coll' %}
+{% extends tpl.extend|d('bajoAdmin:/layout/default') %}
+{% set baseRoute = tpl.baseRoute|d('bajoAdmin:/coll/:coll') %}
+{% set baseId = tpl.baseId|d('coll') %}
 
 {% block body %}
-{% cmp 'navbar', margin='bottom3', border='bottom' %}
-  {% cmp 'h5' %}
-    {% cmp 'a', href=routePath('bajoAdmin:/coll/:coll/list', _meta), icon='arrowStart', iconMargin='end1' %}{% endcmp %}
-    {{ action|t }}
-  {% endcmp %}
-  {% if action !== 'Add Record' %}
-    {% cmp 'a', id='btn-clone', href='#' %}
-      {{ 'Copy as New Record'|t }}
-    {% endcmp %}
-  {% endif %}
-{% endcmp %}
-{% cmp 'form', method='POST', action=_meta.url, margin='bottom3' %}
-  {% for l in schema.view.layouts %}
-    {% set legend = l.title|is('empty')|ternary(false, l.title|t) %}
-    {% cmp 'fieldset', labelFloating=true, margin='bottom3', options=l.fields, legend=legend %}{% endcmp %}
-  {% endfor %}
-  {% if action === 'Add Record' %}
-    {% cmp 'div', display='flex', justifyContent='end' %}
-      {% cmp 'button', variant='link', type='reset', margin='end3' %}{{ 'Reset'|t }}{% endcmp %}
-      {% cmp 'button', variant='primary', type='submit' %}{{ 'Submit'|t }}{% endcmp %}
-    {% endcmp %}
-  {% else %}
-    {% cmp 'div', display='flex', justifyContent='between' %}
-      {% if not schema.disabled|array('includes', 'remove') %}
-        {% cmp 'button', variant='primary', id='btn-delete' %}{{ 'Delete'|t }}{% endcmp %}
-      {% endif %}
-      {% cmp 'div' %}
-        {% cmp 'button', variant='link', type='reset', margin='end3' %}{{ 'Reset'|t }}{% endcmp %}
-        {% cmp 'button', variant='primary', type='submit' %}{{ 'Submit'|t }}{% endcmp %}
+{% cmp 'row' %}
+  {% cmp 'col', columns='small:12,medium:8' %}
+    {% cmp 'navbar', margin='bottom3', border='bottom' %}
+      {% cmp 'h5' %}
+        {% cmp 'a', href=routePath(baseRoute + '/list', _meta), icon='arrowStart', iconMargin='end1' %}{% endcmp %}
+        {{ action|t }}
       {% endcmp %}
     {% endcmp %}
-  {% endif %}
+    {% cmp 'form', method='POST', action=_meta.url, margin='bottom3' %}
+      {% for l in schema.view.layouts %}
+        {% set legend = l.title|is('empty')|ternary(false, l.title|t) %}
+        {% cmp 'fieldset', labelFloating=true, margin='bottom3', options=l.fields, legend=legend %}{% endcmp %}
+      {% endfor %}
+      {% if action === 'Add Record' %}
+        {% cmp 'div', display='flex', justifyContent='end' %}
+          {% cmp 'button', variant='link', type='reset', margin='end3' %}{{ 'Reset'|t }}{% endcmp %}
+          {% cmp 'button', variant='primary', type='submit' %}{{ 'Submit'|t }}{% endcmp %}
+        {% endcmp %}
+      {% else %}
+        {% cmp 'div', display='flex', justifyContent='between' %}
+          {% cmp 'div' %}
+            {% if action !== 'Add Record' %}
+              {% cmp 'button', variant='primary', id='btn-clone', href='#' %}{{ 'Copy as New Record'|t }}{% endcmp %}
+            {% endif %}
+            {% if not schema.disabled|array('includes', 'remove') %}
+              {% cmp 'button', variant='danger', id='btn-delete' %}{{ 'Delete'|t }}{% endcmp %}
+            {% endif %}
+          {% endcmp %}
+          {% cmp 'div' %}
+            {% include 'bajoWebMpa:/partial/reset-submit' %}
+          {% endcmp %}
+        {% endcmp %}
+      {% endif %}
+    {% endcmp %}
+  {% endcmp %}
+  {% cmp 'col', columns='small:12,medium:4' %}
+    {% cmp 'crudAttachmentEmbed', action=action, baseId=baseId + '-attn', baseRoute=baseRoute + '/attachment', record=form %}{% endcmp %}
+  {% endcmp %}
 {% endcmp %}
 
 {% if action !== 'Add Record' %}

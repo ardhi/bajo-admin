@@ -1,16 +1,10 @@
 {
   "alias": "admin",
   "coll": {
-    "exclude": {
-      "names": [],
-      "plugins": []
-    }
+    "excludes": []
   },
   "pages": {
-    "exclude": {
-      "names": [],
-      "plugins": []
-    }
+    "excludes": []
   },
   "dependencies": ["bajo-db", "bajo-web", "bajo-web-mpa", "bajo-web-static"]
 }
