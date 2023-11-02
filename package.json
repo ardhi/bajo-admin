@@ -1,6 +1,6 @@
 {
   "name": "bajo-admin",
-  "version": "0.1.11",
+  "version": "0.2.0",
   "description": "Admin for Bajo Framework",
   "main": "index.js",
   "scripts": {
