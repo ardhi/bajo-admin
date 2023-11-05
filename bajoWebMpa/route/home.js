@@ -1,8 +1,9 @@
-import buildCollMenu from '../../lib/build-coll-menu.js'
+import preHandler from '../../lib/crud/pre-handler.js'
 
-async function home (ctx, req, reply) {
-  const collMenu = await buildCollMenu.call(this)
-  return reply.view('bajoAdmin:/home', { collMenu })
+export default {
+  title: 'Home',
+  preHandler,
+  handler: async function (ctx, req, reply) {
+    return reply.view('bajoAdmin:/home')
+  }
 }
-
-export default home
