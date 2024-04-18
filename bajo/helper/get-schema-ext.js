@@ -2,9 +2,8 @@ import path from 'path'
 
 const disableds = ['id', 'createdAt', 'updatedAt']
 
-async function applyLayout ({ schema, hidden, plaintext } = {}) {
-  const { importPkg } = this.bajo.helper
-  const { map, each, isString, pullAt, trim, find } = await importPkg('lodash-es')
+function applyLayout ({ schema, hidden, plaintext } = {}) {
+  const { map, each, isString, pullAt, trim, find } = this.bajo.helper._
   if ((schema.view.layouts ?? []).length === 0) {
     schema.view.layouts = [{
       fields: map(schema.properties, p => {
@@ -40,21 +39,21 @@ const handler = {
   list: async function (schema, hidden) {
   },
   detail: async function (schema, hidden) {
-    await applyLayout.call(this, { schema, hidden, plaintext: true })
+    applyLayout.call(this, { schema, hidden, plaintext: true })
   },
   add: async function (schema, hidden) {
-    await applyLayout.call(this, { schema, hidden })
+    applyLayout.call(this, { schema, hidden })
   },
   edit: async function (schema, hidden) {
-    await applyLayout.call(this, { schema, hidden })
+    applyLayout.call(this, { schema, hidden })
   }
 }
 
 async function getSchemaExt (coll, view) {
-  const { importPkg, getConfig, readConfig } = this.bajo.helper
+  const { getConfig, readConfig } = this.bajo.helper
   const { getSchema } = this.bajoDb.helper
-  const { pick, get, filter, omit } = await importPkg('lodash-es')
-  let schema = await getSchema(coll)
+  const { pick, get, filter, omit } = this.bajo.helper._
+  let schema = getSchema(coll)
   const cfg = getConfig(schema.plugin, { full: true })
   const base = path.basename(schema.file, path.extname(schema.file))
   const ext = await readConfig(`${cfg.dir.pkg}/bajoAdmin/coll/${base}.*`, { ignoreError: true })

@@ -1,6 +1,5 @@
 async function afterBuildRoutes (ctx) {
-  const { importPkg, importModule, getConfig, eachPlugins } = this.bajo.helper
-  const fastGlob = await importPkg('fast-glob')
+  const { fastGlob, importModule, getConfig, eachPlugins } = this.bajo.helper
   const cfg = getConfig('bajoWebMpa', { full: true })
   const { build } = await importModule(`${cfg.dir.pkg}/lib/build-routes.js`, { asDefaultImport: false })
   const pathPrefix = 'bajoAdmin/mpa/route'

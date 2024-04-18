@@ -3,9 +3,9 @@
     {% cmp 'meta', charset='utf-8' %}{% endcmp %}
     {% cmp 'meta', name='viewport', content='width=device-width, initial-scale=1' %}{% endcmp %}
     {% cmp 'title'%}{{ getConfig('bajoAdmin').title|t }} - {{ _meta.site.title }}{% endcmp %}
-    {% for c in _meta.theme.css %}
+    {% for c in _meta.theme.css -%}
       {% cmp 'link', rel='stylesheet', href=c %}{% endcmp %}
-    {% endfor %}
+    {%- endfor %}
     {% cmp 'link', rel='stylesheet', href=assetDir('bajoWebMpa') + '/css/common.css' %}{% endcmp %}
     {% block css %}{% endblock %}
   {% endcmp %}
@@ -35,15 +35,15 @@
     {% endcmp %}
     {% include 'bajoWebMpa:/partial/footer' %}
     {% include 'bajoWebMpa:/partial/toast' %}
-    {% for s in _meta.theme.script %}
+    {% for s in _meta.theme.script -%}
       {% cmp 'script', src=s %}{% endcmp %}
-    {% endfor %}
+    {%- endfor %}
     {% cmp 'script', src=assetDir('bajoAdmin') + '/js/common.js' %}{% endcmp %}
     {% block script %}{% endblock %}
     {% if _meta.script %}
     <script>
 $(function () {
-  {{ _meta.script.join('\n')|safe }}
+  {{ _meta.script|join('\n') }}
 })
     </script>
     {% endif %}
