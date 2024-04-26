@@ -46,8 +46,8 @@
 {% if action !== 'Add Record' %}
 {% script %}
 <script>
-  {% include 'cmp:_grid-script-delete-prompt:bootstrap5' %}
-  {% include 'cmp:_grid-script-clone:bootstrap5' %}
+  {% include 'cmp:_crud-script-delete-prompt:bootstrap5' %}
+  {% include 'cmp:_crud-script-clone:bootstrap5' %}
   $('#btn-delete').on('click', function () {
     const ids = ['{{ form.id }}']
     deleteRecord(ids)
@@ -59,7 +59,6 @@
 </script>
 {% endscript %}
 {% endif %}
-
 
 {% endblock %}
 

@@ -8,7 +8,7 @@ async function onBuildLocals (locals, req) {
     const subSubPage = titleize(schema.name.slice(cfg.alias.length))
     locals._meta.title.subPage = subPage
     locals._meta.title.subSubPage = subSubPage
-    locals._meta.schema = schema
+    // locals._meta.schema = schema
   }
 }
 

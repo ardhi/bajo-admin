@@ -27,8 +27,11 @@ function applyLayout ({ schema, hidden, plaintext } = {}) {
         if (hidden.includes(f.name)) deleted.push(j)
         if (plaintext) f.widget = 'formPlaintext'
         if (!f.widget && disableds.includes(f.name)) f.widget = 'formPlaintext'
-        f.type = find(schema.properties, { name: f.name }).type
-        layout.fields[j] = f
+        const prop = find(schema.properties, { name: f.name })
+        if (prop) {
+          f.type = prop.type
+          layout.fields[j] = f
+        }
       })
       if (deleted.length > 0) pullAt(layout.fields, deleted)
     })
@@ -52,7 +55,7 @@ const handler = {
 async function getSchemaExt (coll, view) {
   const { getConfig, readConfig } = this.bajo.helper
   const { getSchema } = this.bajoDb.helper
-  const { pick, get, filter, omit } = this.bajo.helper._
+  const { pick, get, filter, omit, pull } = this.bajo.helper._
   let schema = getSchema(coll)
   const cfg = getConfig(schema.plugin, { full: true })
   const base = path.basename(schema.file, path.extname(schema.file))
@@ -60,13 +63,16 @@ async function getSchemaExt (coll, view) {
   const viewOpts = get(ext, `view.${view}`, {})
   const hidden = get(ext, 'view.hidden', [])
   hidden.push(...(viewOpts.hidden ?? []))
+  const shown = get(ext, 'view.shown', [])
+  shown.push(...(viewOpts.shown ?? []))
+  if (shown.length > 0) pull(hidden, ...shown)
   schema.properties = filter(schema.properties, p => {
     return !(hidden.includes(p.name) || p.hidden)
   })
-  schema = pick(schema, ['name', 'properties', 'indexes', 'disabled'])
+  schema = pick(schema, ['name', 'properties', 'indexes', 'disabled', 'attachment'])
   schema.view = omit(viewOpts, ['hidden'])
   await handler[view].call(this, schema, hidden)
-  return schema
+  return { schema, config: ext }
 }
 
 export default getSchemaExt
