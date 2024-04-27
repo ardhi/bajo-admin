@@ -1,11 +1,16 @@
 {% extends tpl.extend|d('bajoAdmin:/layout/default') %}
 {% set baseRoute = tpl.baseRoute|d('bajoAdmin:/coll/:coll') %}
 {% set baseId = tpl.baseId|d('coll') %}
+{% set types = ['table', 'gridSmall', 'grid'] %}
+{% if schema.stat|length > 0 %}{% set types = ['table', 'gridSmall', 'grid', 'stat'] %}{% else %}{% set types = ['table', 'gridSmall', 'grid'] %}{% endif %}
 
 {% block body %}
-{% cmp 'crudNavbar', view=view, schema=schema, baseRoute=baseRoute, baseId=baseId %}{% endcmp %}
+{% cmp 'crudNavbar', view=view, schema=schema, baseRoute=baseRoute, baseId=baseId, types=types %}{% endcmp %}
 {% if view === 'table' %}
   {% cmp 'crudTable', records=data, schema=schema, id=baseId, route=baseRoute %}
+  {% endcmp %}
+{% elif view === 'stat' %}
+  {% cmp 'histogram', records=data, schema=schema, id=baseId, route=baseRoute %}
   {% endcmp %}
 {% else %}
   {% cmp 'crudGrid', records=data, schema=schema, id=baseId, route=baseRoute %}

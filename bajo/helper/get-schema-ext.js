@@ -52,14 +52,21 @@ const handler = {
   }
 }
 
+function hasStat (schema) {
+  const { isSet } = this.bajo.helper
+  let stat = schema.stat === false ? [] : schema.stat
+  if (typeof stat === 'string') stat = [stat]
+  if (!isSet(stat)) stat = schema.properties.filter(p => p.type === 'datetime').map(p => p.name)
+  schema.stat = stat
+}
+
 async function getSchemaExt (coll, view) {
-  const { getConfig, readConfig } = this.bajo.helper
+  const { readConfig } = this.bajo.helper
   const { getSchema } = this.bajoDb.helper
   const { pick, get, filter, omit, pull } = this.bajo.helper._
   let schema = getSchema(coll)
-  const cfg = getConfig(schema.plugin, { full: true })
   const base = path.basename(schema.file, path.extname(schema.file))
-  const ext = await readConfig(`${cfg.dir.pkg}/bajoAdmin/coll/${base}.*`, { ignoreError: true })
+  const ext = await readConfig(`${schema.plugin}:/bajoAdmin/coll/${base}.*`, { ignoreError: true })
   const viewOpts = get(ext, `view.${view}`, {})
   const hidden = get(ext, 'view.hidden', [])
   hidden.push(...(viewOpts.hidden ?? []))
@@ -72,6 +79,7 @@ async function getSchemaExt (coll, view) {
   schema = pick(schema, ['name', 'properties', 'indexes', 'disabled', 'attachment'])
   schema.view = omit(viewOpts, ['hidden'])
   await handler[view].call(this, schema, hidden)
+  hasStat.call(this, schema)
   return { schema, config: ext }
 }
 

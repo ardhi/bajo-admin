@@ -1,15 +1,23 @@
 async function onBuildLocals (locals, req) {
-  const { titleize, getConfig } = this.bajo.helper
-  const { getSchema } = this.bajoDb.helper
-  if (req.params.coll) {
-    const schema = getSchema(req.params.coll)
-    const cfg = getConfig(schema.plugin, { full: true })
-    const subPage = cfg.title
-    const subSubPage = titleize(schema.name.slice(cfg.alias.length))
-    locals._meta.title.subPage = subPage
-    locals._meta.title.subSubPage = subSubPage
-    // locals._meta.schema = schema
+  const { isEmpty } = this.bajo.helper._
+  const title = {}
+  const items = req.params.coll ? locals._meta.menu.coll : locals._meta.menu.pages
+  for (const item of items) {
+    for (const child of item.children) {
+      if (req.params.coll) {
+        if (child.id === req.params.coll) {
+          title.page = item.name
+          title.subPage = child.name
+        }
+      } else {
+        if (child.url === req.url) {
+          title.page = item.name
+          title.subPage = child.title
+        }
+      }
+    }
   }
+  if (!isEmpty(title)) locals._meta.title = title
 }
 
 export default onBuildLocals
