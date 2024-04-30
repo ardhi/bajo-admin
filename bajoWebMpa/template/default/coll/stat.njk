@@ -1,0 +1,54 @@
+{% extends tpl.extend|d('bajoAdmin:/layout/default') %}
+{% set baseRoute = tpl.baseRoute|d('bajoAdmin:/coll/:coll') %}
+{% set baseId = tpl.baseId|d('coll') %}
+{% set views = ['table', 'gridSmall', 'grid'] %}
+{% if schema.histogram|length > 0 %}{% set views = ['table', 'gridSmall', 'grid', 'stat'] %}{% else %}{% set views = ['table', 'gridSmall', 'grid'] %}{% endif %}
+
+{% block body %}
+{% cmp 'crudNavbar', view=view, baseField=baseField, groupField=groupField, schema=schema, baseRoute=baseRoute, baseId=baseId, views=views, stats=stats, stat=stat, agg=agg, chart=chart %}{% endcmp %}
+{% cmp 'hr' %}{% endcmp %}
+{% cmp 'form', margin='bottom5' %}
+  {% cmp 'row' %}
+    {% cmp 'col', columns='small:6,medium:3' %}
+      {% cmp 'formSelect', class='stat-opts', name='agg', label='aggType'|t, labelFloating=true, options=aggs, value=agg %}{% endcmp %}
+    {% endcmp %}
+    {% cmp 'col', columns='small:6,medium:3' %}
+      {% cmp 'formSelect', class='stat-opts', name='chart', label='chartType'|t, labelFloating=true, options=charts, value=chart %}{% endcmp %}
+    {% endcmp %}
+    {% cmp 'col', columns='small:6,medium:3' %}
+      {% cmp 'formSelect', class='stat-opts', name='base', label='baseField'|t, labelFloating=true, options=schema.histogram, value=base %}{% endcmp %}
+    {% endcmp %}
+    {% cmp 'col', columns='small:6,medium:3' %}
+      {% cmp 'formSelect', disabled=(agg === 'count')|ternary(true, undefined), class='stat-opts', name='group', label='groupField'|t, labelFloating=true, options=(agg === 'count')|ternary(undefined, schema.histogramGroup), value=(agg === 'count')|ternary(undefined, group) %}{% endcmp %}
+    {% endcmp %}
+  {% endcmp %}
+{% endcmp %}
+{% cmp 'histogram', records=data, schema=schema, id=baseId, route=baseRoute, stat=stat, chart=chart %}
+{% endcmp %}
+
+{% if data.length === 0 %}
+  {% cmp 'div', margin='y5', text='center' %}
+    {{ 'No record found!'|t }}
+  {% endcmp %}
+{% endif %}
+
+{% cmp 'crudFooter', options=params %}{% endcmp %}
+
+{% script %}
+$('.stat-opts').on('change', function () {
+  const search = new URLSearchParams(location.search)
+  search.set('base', $('select[name=base]').val())
+  const group = $('select[name=group]').val()
+  if (group) search.set('group', group)
+  else search.delete('group')
+
+  const url = '{{ routePath(baseRoute, { params: _meta.params }) }}/stat/{{ stat }}/' + $('select[name=agg]').val() +
+    '/' + $('select[name=chart]').val() + '?' + search.toString()
+  location.href = url
+})
+{% endscript %}
+
+{% endblock %}
+
+{% block css %}{% endblock %}
+{% block script %}{% endblock %}

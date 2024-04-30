@@ -52,12 +52,15 @@ const handler = {
   }
 }
 
-function hasStat (schema) {
+function hasHistogram (schema, ext) {
   const { isSet } = this.bajo.helper
-  let stat = schema.stat === false ? [] : schema.stat
-  if (typeof stat === 'string') stat = [stat]
-  if (!isSet(stat)) stat = schema.properties.filter(p => p.type === 'datetime').map(p => p.name)
-  schema.stat = stat
+  const { get } = this.bajo.helper._
+  let histogram = ext.histogram === false ? [] : get(ext, 'histogram.baseField')
+  if (typeof histogram === 'string') histogram = [histogram]
+  if (!isSet(histogram)) histogram = schema.properties.filter(p => p.type === 'datetime').map(p => p.name)
+  schema.histogram = histogram
+  schema.histogramGroup = get(ext, 'histogram.groupField')
+  if (!schema.histogramGroup) schema.histogramGroup = schema.properties.filter(p => ['integer', 'smallint', 'float'].includes(p.type) && !['id'].includes(p.name)).map(p => p.name)
 }
 
 async function getSchemaExt (coll, view) {
@@ -78,8 +81,8 @@ async function getSchemaExt (coll, view) {
   })
   schema = pick(schema, ['name', 'properties', 'indexes', 'disabled', 'attachment'])
   schema.view = omit(viewOpts, ['hidden'])
-  await handler[view].call(this, schema, hidden)
-  hasStat.call(this, schema)
+  await handler[view].call(this, schema)
+  hasHistogram.call(this, schema, ext)
   return { schema, config: ext }
 }
 
