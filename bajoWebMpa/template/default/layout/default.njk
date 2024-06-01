@@ -38,7 +38,6 @@
     {% for s in _meta.theme.script -%}
       {% cmp 'script', src=s %}{% endcmp %}
     {%- endfor %}
-    {% cmp 'script', src=assetDir('bajoAdmin') + '/js/common.js' %}{% endcmp %}
     {% block script %}{% endblock %}
     {% if _meta.script %}
     <script>
