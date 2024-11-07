@@ -1,4 +1,4 @@
-async function onBuildLocals (locals, req) {
+async function afterBuildLocals (locals, req) {
   const { isEmpty } = this.bajo.helper._
   const title = {}
   const items = req.params.coll ? locals._meta.menu.coll : locals._meta.menu.pages
@@ -20,4 +20,4 @@ async function onBuildLocals (locals, req) {
   if (!isEmpty(title)) locals._meta.title = title
 }
 
-export default onBuildLocals
+export default afterBuildLocals

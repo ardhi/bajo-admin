@@ -1,5 +1,5 @@
 const get = {
-  handler: async function (ctx, req, reply) {
+  handler: async function (req, reply) {
     const { recordGet } = this.bajoWeb.helper
     return await recordGet({ req, reply })
   },

@@ -4,7 +4,7 @@ import detailHandler from '../../../../lib/crud/detail-handler.js'
 export default {
   title: 'Collection',
   preHandler,
-  handler: async function (ctx, req, reply) {
-    return await detailHandler.call(this, { ctx, req, reply })
+  handler: async function (req, reply) {
+    return await detailHandler.call(this, { req, reply })
   }
 }

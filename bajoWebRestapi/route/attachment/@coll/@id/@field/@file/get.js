@@ -1,4 +1,4 @@
-async function get (ctx, req, reply) {
+async function get (req, reply) {
   const { attachmentGet } = this.bajoDb.helper
   const { coll, id, field, file } = req.params
   const { mimeType, stats } = req.query

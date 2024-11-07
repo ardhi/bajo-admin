@@ -4,7 +4,7 @@ import listHandler from '../../../../lib/crud/list-handler.js'
 export default {
   title: 'Collection',
   preHandler,
-  handler: async function (ctx, req, reply) {
-    return await listHandler.call(this, { ctx, req, reply })
+  handler: async function (req, reply) {
+    return await listHandler.call(this, { req, reply })
   }
 }

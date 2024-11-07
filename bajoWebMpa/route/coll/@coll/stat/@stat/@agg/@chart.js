@@ -4,7 +4,7 @@ import statHandler from '../../../../../../../lib/crud/stat-handler.js'
 export default {
   title: 'Collection',
   preHandler,
-  handler: async function (ctx, req, reply) {
-    return await statHandler.call(this, { ctx, req, reply })
+  handler: async function (req, reply) {
+    return await statHandler.call(this, { req, reply })
   }
 }

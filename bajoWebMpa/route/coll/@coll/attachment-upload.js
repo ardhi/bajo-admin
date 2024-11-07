@@ -2,8 +2,8 @@ import attachmentUploadHandler from '../../../../lib/crud/attachment-upload-hand
 
 export default {
   method: 'POST',
-  handler: async function (ctx, req, reply) {
+  handler: async function (req, reply) {
     const redirect = req.body.redirect
-    await attachmentUploadHandler.call(this, { ctx, req, reply, redirect })
+    await attachmentUploadHandler.call(this, { req, reply, redirect })
   }
 }

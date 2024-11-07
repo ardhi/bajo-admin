@@ -1,4 +1,4 @@
-async function create (ctx, req, reply) {
+async function create (req, reply) {
   const { importModule } = this.bajo.helper
   const { coll, id } = req.params
   const { mimeType, stats } = req.query

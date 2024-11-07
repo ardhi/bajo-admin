@@ -1,5 +1,5 @@
 const find = {
-  handler: async function (ctx, req, reply) {
+  handler: async function (req, reply) {
     const { recordFind } = this.bajoWeb.helper
     return await recordFind({ req, reply })
   }

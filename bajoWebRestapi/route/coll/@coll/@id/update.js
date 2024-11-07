@@ -1,5 +1,5 @@
 const update = {
-  handler: async function (ctx, req, reply) {
+  handler: async function (req, reply) {
     const { recordUpdate } = this.bajoWeb.helper
     return await recordUpdate({ req, reply })
   },

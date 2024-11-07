@@ -1,5 +1,5 @@
 const replace = {
-  handler: async function (ctx, req, reply) {
+  handler: async function (req, reply) {
     const { recordUpdate } = this.bajoWeb.helper
     const options = { partial: false }
     return await recordUpdate({ req, reply, options })

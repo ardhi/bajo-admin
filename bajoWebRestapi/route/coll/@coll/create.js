@@ -1,5 +1,5 @@
 const create = {
-  handler: async function (ctx, req, reply) {
+  handler: async function (req, reply) {
     const { recordCreate } = this.bajoWeb.helper
     return await recordCreate({ req, reply })
   },

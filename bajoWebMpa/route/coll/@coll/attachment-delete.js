@@ -2,8 +2,8 @@ import attachmentDeleteHandler from '../../../../lib/crud/attachment-delete-hand
 
 export default {
   method: 'POST',
-  handler: async function (ctx, req, reply) {
+  handler: async function (req, reply) {
     const redirect = req.body.redirect
-    await attachmentDeleteHandler.call(this, { ctx, req, reply, redirect })
+    await attachmentDeleteHandler.call(this, { req, reply, redirect })
   }
 }

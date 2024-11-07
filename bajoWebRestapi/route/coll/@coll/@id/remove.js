@@ -1,5 +1,5 @@
 const remove = {
-  handler: async function (ctx, req, reply) {
+  handler: async function (req, reply) {
     const { recordRemove } = this.bajoWeb.helper
     return await recordRemove({ req, reply })
   },

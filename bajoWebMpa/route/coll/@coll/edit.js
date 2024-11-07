@@ -5,7 +5,7 @@ export default {
   title: 'Collection',
   preHandler,
   method: ['GET', 'POST'],
-  handler: async function (ctx, req, reply) {
-    return editHandler.call(this, { ctx, req, reply })
+  handler: async function (req, reply) {
+    return editHandler.call(this, { req, reply })
   }
 }

@@ -1,4 +1,4 @@
-async function find (ctx, req, reply) {
+async function find (req, reply) {
   const { attachmentFind } = this.bajoDb.helper
   const { coll, id } = req.params
   const { mimeType, stats } = req.query

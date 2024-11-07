@@ -1,4 +1,4 @@
-async function update (ctx, req, reply) {
+async function update (req, reply) {
   const { importModule } = this.bajo.helper
   const { attachmentRemove } = this.bajoDb.helper
   const { coll, id, field, file } = req.params
